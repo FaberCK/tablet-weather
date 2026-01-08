@@ -6,8 +6,10 @@ function App() {
   return (
     <div className="App">
       <div className="weatherDash">
-      <WeatherDashboard />  
-      <ScheduledRadio />
+        <WeatherDashboard />  
+      </div>
+      <div className="radioPlayer">
+        <ScheduledRadio />
       </div>
     </div>
   );

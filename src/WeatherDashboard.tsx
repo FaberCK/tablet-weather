@@ -1,4 +1,12 @@
+
 import { useEffect, useState } from "react";
+
+// Szybka poprawka - dodaj na górze WeatherDashboard.tsx
+declare global {
+  interface OWMForecast {
+    list: any[];
+  }
+}
 
 type OWMCurrent = {
   main: {
@@ -12,6 +20,10 @@ type OWMCurrent = {
   weather: Array<{ id: number }>;
   dt: number;
 };
+
+interface OWMForecast {
+  list: OWMForecastItem[];
+}
 
 type OWMForecastItem = {
   dt: number;
@@ -79,7 +91,7 @@ function buildNextHours(forecast: OWMForecastItem[] | null, count = 8): HourSlot
   const now = Date.now() / 1000;
   const slots: HourSlot[] = [];
 
-  for (const item of forecast.list) {
+  for (const item of forecast) {
     if (item.dt >= now || slots.length < 2) {
       slots.push({
         time: item.dt,
@@ -130,7 +142,7 @@ export function WeatherDashboard() {
     return <div className="screen">⏳</div>;
   }
 
-  const nextHours = buildNextHours(forecast);
+  const nextHours = buildNextHours(forecast?.list ?? null);
   const pressureIcon = pressureTrendArrow(forecast);
   const pressureNow = current ? Math.round(current.main.pressure) : null;
   const windDeg = current?.wind.deg ?? 0;
