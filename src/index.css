@@ -87,3 +87,17 @@ body,
   font-size: 1.1rem;
   font-weight: 600;
 }
+.weatherDash {
+  display: flex;
+  flex-direction: row; /* obok siebie poziomo */
+  gap: 2rem; /* odstęp między komponentami */
+  align-items: flex-start; /* wyrównanie do góry */
+}
+
+/* Responsywność - na mobile jeden pod drugim */
+@media (max-width: 768px) {
+  .weatherDash {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
