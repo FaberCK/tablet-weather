@@ -21,9 +21,9 @@ type OWMCurrent = {
   dt: number;
 };
 
-interface OWMForecast {
-  list: OWMForecastItem[];
-}
+// interface OWMForecast {
+//   list: OWMForecastItem[];
+// }
 
 type OWMForecastItem = {
   dt: number;
