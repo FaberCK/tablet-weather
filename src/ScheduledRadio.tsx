@@ -1,7 +1,7 @@
 // ScheduledRadio.tsx
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
-const RADIO_URL = 'https://stream.rcs.revma.com/4md4m0a0fs8uv';
+const RADIO_URL = 'https://stream.nowyswiat.online/mp3';
 
 interface ScheduleTimes {
   start: string;
