@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import { Clock } from "./Clock"; 
 
 // Szybka poprawka - dodaj na górze WeatherDashboard.tsx
 declare global {
@@ -153,6 +154,9 @@ export function WeatherDashboard() {
 
       {current && (
         <>
+          <div>
+            <Clock />
+          </div>
           <div className="icon-big">
             {iconFromOWMId(current.weather[0].id)}
           </div>
