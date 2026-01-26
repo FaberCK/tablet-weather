@@ -1,6 +1,7 @@
 import "./index.css";
 import { WeatherDashboard } from "./WeatherDashboard";
 //import { Clock } from "./Clock";
+import ScheduledRadio from './ScheduledRadio';
 import { useState } from "react";
 
 function App() {
@@ -16,6 +17,9 @@ function App() {
           <button onClick={() => setRadioVisible((v) => !v)}>
             {radioVisible ? "Hide Radio" : "Show Radio"}
           </button>
+        </div>
+        <div style={{ display: radioVisible ? 'block' : 'none' }}>
+          <ScheduledRadio />
         </div>
       </div>
     </div>

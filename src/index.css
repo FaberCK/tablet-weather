@@ -15,17 +15,17 @@ body,
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 1.5rem;
   height: 100%;
 }
 
 .icon-big {
-  font-size: 8rem;
+  font-size: 6rem;
 }
 
 .temperature {
-  font-size: 6rem;
-  font-weight: 700;
+  font-size: 4rem;
+  font-weight: 500;
 }
 
 .details-row {
