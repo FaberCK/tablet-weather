@@ -88,25 +88,77 @@ body,
   font-weight: 600;
 }
 .App {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  grid-template-rows: 1fr auto;
+  gap: 12px;
+  height: 100vh;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.mainArea {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
   display: flex;
-  flex-direction: row;
-  height: 100%;
-  width: 100%;
-  align-items: stretch;
-  gap: 0;
+  align-items: center;
+  justify-content: center;
 }
 
-.weatherDash {
-  flex: 0 0 75%;
-  overflow-y: auto;
+.sideArea {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  overflow: auto;
 }
 
+.radioToggle {
+  grid-column: 1 / -1;
+  grid-row: 2 / 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Clock styles */
+.clock {
+  text-align: center;
+  color: var(--text-color, #ffffff);
+}
+
+.clock-time {
+  font-size: 4rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.clock-date {
+  margin-top: 8px;
+  font-size: 1.5rem;
+  opacity: 0.85;
+}
+
+/* Radio player container */
 .radioPlayer {
-  flex: 0 0 25%;
-  overflow-y: auto;
+  margin-left: 12px;
 }
 
-/* Responsywność - on smaller screens, stack vertically and center */
+/* responsive */
+@media (max-width: 800px) {
+  .App {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .sideArea {
+    order: 2;
+  }
+
+  .radioToggle {
+    order: 3;
+  }
+}
+
 @media (max-width: 1000px) {
   .App {
     flex-direction: column;
