@@ -87,7 +87,7 @@ type HourSlot = {
   iconId: number;
 };
 
-function buildNextHours(forecast: OWMForecastItem[] | null, count = 8): HourSlot[] {
+function buildNextHours(forecast: OWMForecastItem[] | null, count = 6): HourSlot[] {
   if (!forecast) return [];
   const now = Date.now() / 1000;
   const slots: HourSlot[] = [];
