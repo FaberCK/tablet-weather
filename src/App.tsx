@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div className="App">
-      <div className="mainArea">
+      <div className="mainArea" >
         <WeatherDashboard />
       </div>
       <div className="sideArea">

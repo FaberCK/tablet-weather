@@ -15,10 +15,15 @@ export function Clock() {
   });
   const dateString = now.toLocaleDateString();
 
+  const isNight = now.getHours() < 6 || now.getHours() >= 18;
+  const titleStyle = {
+    color: isNight ? "red" : "inherit",
+  };
+
   return (
-    <div className="clock screen">
-      <div className="clock-time">{timeString}</div>
-      <div className="clock-date">{dateString}</div>
+    <div className="clock screen" style={titleStyle}>
+      <div className="clock-time" >{timeString}</div>
+      <div className="clock-date" >{dateString}</div>
     </div>
   );
 }

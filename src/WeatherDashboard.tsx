@@ -148,6 +148,8 @@ export function WeatherDashboard() {
   const pressureNow = current ? Math.round(current.main.pressure) : null;
   const windDeg = current?.wind.deg ?? 0;
 
+
+
   return (
     <div className="screen">
       {error && <div className="status status-error">⚠️</div>}
