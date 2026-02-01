@@ -142,7 +142,7 @@ export function WeatherDashboard() {
   async function fetchCoordsFromCity(cityName: string) {
     try {
       setError(false);
-      const res = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(cityName)}&limit=1&appid=${API_KEY}`);
+      const res = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(cityName)}&limit=1&appid=${API_KEY}`);
       if (!res.ok) throw new Error();
       const data = await res.json();
       if (data.length === 0) throw new Error();
