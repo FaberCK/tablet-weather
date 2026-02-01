@@ -111,8 +111,6 @@ export function WeatherDashboard() {
   const [lat, setLat] = useState<number | null>(null);
   const [lon, setLon] = useState<number | null>(null);
   const [city, setCity] = useState<string | null>(null); // Add city state
-  const [showCityInput, setShowCityInput] = useState(false);
-  const [cityInput, setCityInput] = useState("");
 
   async function fetchWeather() {
     if (!lat || !lon) return; // Wait for geolocation
@@ -139,21 +137,6 @@ export function WeatherDashboard() {
     }
   }
 
-  async function fetchCoordsFromCity(cityName: string) {
-    try {
-      setError(false);
-      const res = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(cityName)}&limit=1&appid=${API_KEY}`);
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      if (data.length === 0) throw new Error();
-      setLat(data[0].lat);
-      setLon(data[0].lon);
-      setCity(cityName);
-    } catch {
-      setError(true);
-    }
-  }
-
   function getGeolocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -163,13 +146,11 @@ export function WeatherDashboard() {
         },
         (err) => {
           console.error("Geolocation error:", err);
-          setError(true);
-          setShowCityInput(true);
+          setError(true); // Or handle specifically
         }
       );
     } else {
-      setError(true);
-      setShowCityInput(true);
+      setError(true); // Geolocation not supported
     }
   }
 
@@ -185,18 +166,8 @@ export function WeatherDashboard() {
     }
   }, [lat, lon]);
 
-  if (!current) {
-    if (showCityInput) {
-      return (
-        <div className="screen">
-          <div>Enter city name:</div>
-          <input value={cityInput} onChange={(e) => setCityInput(e.target.value)} />
-          <button onClick={() => { fetchCoordsFromCity(cityInput); setShowCityInput(false); }}>Submit</button>
-        </div>
-      );
-    } else {
-      return <div className="screen">⏳</div>;
-    }
+  if (!current && !error) {
+    return <div className="screen">⏳</div>;
   }
 
   const nextHours = buildNextHours(forecast?.list ?? null);
