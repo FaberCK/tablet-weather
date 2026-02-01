@@ -39,12 +39,11 @@ type OWMForecastItem = {
 };
 
 const API_KEY = "2685669859a3d2e78e0cce765a0ecb41"; 
-const DEFAULT_LOCATION = {
-  lat: 52.3213,
-  lon: 21.1047,
-  city: "Marki"
+const LOCATIONS = {
+  Marki: { lat: 52.3213, lon: 21.1047 },
+  Ząbki: { lat: 52.2927, lon: 21.1222 },
+  Warszawa: { lat: 52.2297, lon: 21.0122 }
 };
-// Remove hardcoded LAT and LON
 
 function iconFromOWMId(id: number): string {
   if (id >= 200 && id <= 232) return "⛈️";
@@ -115,10 +114,11 @@ export function WeatherDashboard() {
   const [error, setError] = useState(false);
   const [lat, setLat] = useState<number | null>(null);
   const [lon, setLon] = useState<number | null>(null);
-  const [city, setCity] = useState<string | null>(null); // Add city state
+  const [city, setCity] = useState<string | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<string>("Marki");
 
   async function fetchWeather() {
-    if (!lat || !lon) return; // Wait for geolocation
+    if (!lat || !lon) return; // Wait for location selection
     try {
       setError(false);
 
@@ -142,32 +142,12 @@ export function WeatherDashboard() {
     }
   }
 
-  function getGeolocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLat(position.coords.latitude);
-          setLon(position.coords.longitude);
-        },
-        (err) => {
-          console.error("Geolocation error:", err);
-          // Fallback to default location
-          setLat(DEFAULT_LOCATION.lat);
-          setLon(DEFAULT_LOCATION.lon);
-          setCity(DEFAULT_LOCATION.city);
-        }
-      );
-    } else {
-      // Geolocation not supported, use default
-      setLat(DEFAULT_LOCATION.lat);
-      setLon(DEFAULT_LOCATION.lon);
-      setCity(DEFAULT_LOCATION.city);
-    }
-  }
-
   useEffect(() => {
-    getGeolocation();
-  }, []);
+    const loc = LOCATIONS[selectedLocation as keyof typeof LOCATIONS];
+    setLat(loc.lat);
+    setLon(loc.lon);
+    setCity(selectedLocation);
+  }, [selectedLocation]);
 
   useEffect(() => {
     if (lat && lon) {
@@ -194,6 +174,7 @@ export function WeatherDashboard() {
 
       {current && (
         <>
+
           <div>
             <Clock />
           </div>
@@ -203,7 +184,15 @@ export function WeatherDashboard() {
           <div className="temperature">
             {Math.round(current.main.temp)}°C
           </div>
+          <div>
+            <select value={selectedLocation} onChange={(e) => setSelectedLocation(e.target.value)}>
+              <option value="Marki">Marki</option>
+              <option value="Ząbki">Ząbki</option>
+              <option value="Warszawa">Warszawa</option>
+            </select>
           {city && <div className="city">{city}</div>} {/* Display city */}
+          </div>
+
           <div className="details-row">
             <div className="detail">
               💨 {Math.round(current.wind.speed * 3.6)} km/h
