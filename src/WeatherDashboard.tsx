@@ -9,6 +9,7 @@ declare global {
 }
 
 type OWMCurrent = {
+  name: string; // Add city name
   main: {
     temp: number;
     pressure: number;
@@ -109,6 +110,7 @@ export function WeatherDashboard() {
   const [error, setError] = useState(false);
   const [lat, setLat] = useState<number | null>(null);
   const [lon, setLon] = useState<number | null>(null);
+  const [city, setCity] = useState<string | null>(null); // Add city state
 
   async function fetchWeather() {
     if (!lat || !lon) return; // Wait for geolocation
@@ -129,6 +131,7 @@ export function WeatherDashboard() {
 
       setCurrent(currentData);
       setForecast(forecastData);
+      setCity(currentData.name); // Set city from API
     } catch {
       setError(true);
     }
@@ -189,6 +192,7 @@ export function WeatherDashboard() {
           <div className="temperature">
             {Math.round(current.main.temp)}°C
           </div>
+          {city && <div className="city">{city}</div>} {/* Display city */}
           <div className="details-row">
             <div className="detail">
               💨 {Math.round(current.wind.speed * 3.6)} km/h
