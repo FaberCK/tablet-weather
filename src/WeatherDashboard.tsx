@@ -178,19 +178,21 @@ export function WeatherDashboard() {
           <div>
             <Clock />
           </div>
-          <div className="icon-big">
-            {iconFromOWMId(current.weather[0].id)}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div className="temperature">
+              {Math.round(current.main.temp)}°C
+            </div>
+            <div className="icon-big">
+              {iconFromOWMId(current.weather[0].id)}
+            </div>
           </div>
-          <div className="temperature">
-            {Math.round(current.main.temp)}°C
-          </div>
-          <div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <select value={selectedLocation} onChange={(e) => setSelectedLocation(e.target.value)}>
               <option value="Marki">Marki</option>
               <option value="Ząbki">Ząbki</option>
               <option value="Warszawa">Warszawa</option>
             </select>
-          {city && <div className="city">{city}</div>} {/* Display city */}
+            {city && <div className="city">{city}</div>}
           </div>
 
           <div className="details-row">
