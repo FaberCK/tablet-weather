@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Clock } from "./Clock"; 
 
@@ -39,8 +38,7 @@ type OWMForecastItem = {
 };
 
 const API_KEY = "2685669859a3d2e78e0cce765a0ecb41"; 
-const LAT = 52.17;
-const LON = 21.06;
+// Remove hardcoded LAT and LON
 
 function iconFromOWMId(id: number): string {
   if (id >= 200 && id <= 232) return "⛈️";
@@ -109,14 +107,17 @@ export function WeatherDashboard() {
   const [current, setCurrent] = useState<OWMCurrent | null>(null);
   const [forecast, setForecast] = useState<{ list: OWMForecastItem[] } | null>(null);
   const [error, setError] = useState(false);
+  const [lat, setLat] = useState<number | null>(null);
+  const [lon, setLon] = useState<number | null>(null);
 
   async function fetchWeather() {
+    if (!lat || !lon) return; // Wait for geolocation
     try {
       setError(false);
 
       const [currentRes, forecastRes] = await Promise.all([
-        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${LAT}&lon=${LON}&appid=${API_KEY}&units=metric`),
-        fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${LAT}&lon=${LON}&appid=${API_KEY}&units=metric`),
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`),
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`),
       ]);
 
       if (!currentRes.ok || !forecastRes.ok) {
@@ -133,11 +134,34 @@ export function WeatherDashboard() {
     }
   }
 
+  function getGeolocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLat(position.coords.latitude);
+          setLon(position.coords.longitude);
+        },
+        (err) => {
+          console.error("Geolocation error:", err);
+          setError(true); // Or handle specifically
+        }
+      );
+    } else {
+      setError(true); // Geolocation not supported
+    }
+  }
+
   useEffect(() => {
-    fetchWeather();
-    const id = setInterval(fetchWeather, 10 * 60 * 1000); // co 10 min (prognoza co 3h)
-    return () => clearInterval(id);
+    getGeolocation();
   }, []);
+
+  useEffect(() => {
+    if (lat && lon) {
+      fetchWeather();
+      const id = setInterval(fetchWeather, 10 * 60 * 1000);
+      return () => clearInterval(id);
+    }
+  }, [lat, lon]);
 
   if (!current && !error) {
     return <div className="screen">⏳</div>;
