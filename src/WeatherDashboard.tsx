@@ -39,6 +39,11 @@ type OWMForecastItem = {
 };
 
 const API_KEY = "2685669859a3d2e78e0cce765a0ecb41"; 
+const DEFAULT_LOCATION = {
+  lat: 52.3213,
+  lon: 21.1047,
+  city: "Marki"
+};
 // Remove hardcoded LAT and LON
 
 function iconFromOWMId(id: number): string {
@@ -146,11 +151,17 @@ export function WeatherDashboard() {
         },
         (err) => {
           console.error("Geolocation error:", err);
-          setError(true); // Or handle specifically
+          // Fallback to default location
+          setLat(DEFAULT_LOCATION.lat);
+          setLon(DEFAULT_LOCATION.lon);
+          setCity(DEFAULT_LOCATION.city);
         }
       );
     } else {
-      setError(true); // Geolocation not supported
+      // Geolocation not supported, use default
+      setLat(DEFAULT_LOCATION.lat);
+      setLon(DEFAULT_LOCATION.lon);
+      setCity(DEFAULT_LOCATION.city);
     }
   }
 
